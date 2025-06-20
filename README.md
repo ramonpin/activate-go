@@ -1,4 +1,4 @@
-# activate-go: A Smart Virtual Environment Activator
+# A Smart Virtual Environment Activator
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
