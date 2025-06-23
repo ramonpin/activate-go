@@ -157,5 +157,6 @@ func isVenv(path string) bool {
 }
 
 func printCommand(path string) {
+	fmt.Fprintf(os.Stderr, "Activating environment %s...\n", path)
 	fmt.Printf("source %s", filepath.Join(path, "bin", "activate"))
 }
