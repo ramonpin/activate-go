@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
@@ -156,7 +157,20 @@ func isVenv(path string) bool {
 	return !info.IsDir()
 }
 
+// shellEscape escapa una ruta para uso seguro en shells POSIX (bash/zsh/sh)
+// Usa comillas simples que son las más seguras en POSIX shells.
+// Dentro de comillas simples, todo es literal excepto la comilla simple misma.
+func shellEscape(s string) string {
+	if !strings.ContainsAny(s, " \t\n'\"\\$`!*?[](){};&|<>~") {
+		return s
+	}
+
+	escaped := strings.ReplaceAll(s, "'", "'\"'\"'")
+	return "'" + escaped + "'"
+}
 func printCommand(path string) {
+	activatePath := filepath.Join(path, "bin", "activate")
+	escapedPath := shellEscape(activatePath)
 	fmt.Fprintf(os.Stderr, "Activating environment %s...\n", path)
-	fmt.Printf("source %s", filepath.Join(path, "bin", "activate"))
+	fmt.Printf("source %s", escapedPath)
 }
